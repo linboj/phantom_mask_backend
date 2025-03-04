@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Backend.Models;
 using Microsoft.OpenApi.Models;
+using Backend.Seeds;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,7 @@ using (var scope = app.Services.CreateScope())
 
     if (dbContext.Pharmacies.Count() == 0){
         // run seed
+        await DbSeeder.SeedAsync(dbContext, app.Environment);
     }
 }
 
