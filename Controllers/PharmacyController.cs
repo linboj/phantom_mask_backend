@@ -27,7 +27,7 @@ namespace Backend.Controllers
         /// <returns>A list of opened pharmacies.</returns>
         /// <response code="500">Internal Server Error</response>
         [HttpGet("opened")]
-        public async Task<ActionResult<IEnumerable<OpenedPharmacyDTO>>> GetPharmacies([FromQuery] GetOpenPharmaciesParameter parameter)
+        public async Task<ActionResult<IEnumerable<OpenedPharmacyDTO>>> GetPharmacies([AsParameters] GetOpenPharmaciesParameter parameter)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace Backend.Controllers
         /// <param name="order">Order in Asc or Desc (in query)</param>
         /// <returns>A list of masks sold in the pharmacy.</returns>
         [HttpGet("{id}/masks")]
-        public async Task<ActionResult<IEnumerable<MaskInfoDTO>>> GetPharmacyMasks([FromRoute] Guid id, [FromQuery] GetMasksOfPharmacyParameter parameter)
+        public async Task<ActionResult<IEnumerable<MaskInfoDTO>>> GetPharmacyMasks([FromRoute] Guid id, [AsParameters] GetMasksOfPharmacyParameter parameter)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace Backend.Controllers
         /// <param name="isMoreThan">List pharmacy whose mask product amount is more than threshold (in query)</param>
         /// <returns>A list of pharmacies filtered by mask condition.</returns>
         [HttpGet("filter_by_masks")]
-        public async Task<ActionResult<IEnumerable<PharmacyFilteredByMaskDTO>>> GetPharmacyMasks([FromQuery] FilterPharmaciesByMaskConditionParameter parameter)
+        public async Task<ActionResult<IEnumerable<PharmacyFilteredByMaskDTO>>> GetPharmacyMasks([AsParameters] FilterPharmaciesByMaskConditionParameter parameter)
         {
             try
             {

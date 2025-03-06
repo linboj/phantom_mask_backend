@@ -1,31 +1,45 @@
+using System.Text.Json.Serialization;
+
 namespace Backend.Seeds;
 
 internal class PharmacyJson
 {
-    public string Name { get; set; }
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = string.Empty;
+    [JsonPropertyName("cashBalance")]
     public decimal CashBalance { get; set; }
-    public string OpeningHours { get; set; }
-
-    public List<MaskJson> Masks { get; set; }
+    [JsonPropertyName("openingHours")]
+    public string OpeningHours { get; set; } = string.Empty;
+    [JsonPropertyName("masks")]
+    public List<MaskJson> Masks { get; set; } = [];
 }
 
 internal class MaskJson
 {
-    public string Name { get; set; }
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = string.Empty;
+    [JsonPropertyName("price")]
     public decimal Price { get; set; }
 }
 
 internal class UserJson
 {
-    public string Name { get; set; }
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = string.Empty;
+    [JsonPropertyName("cashBalance")]
     public decimal CashBalance { get; set; }
-    public List<PurchaseHistory> PurchaseHistories { get; set; }
+    [JsonPropertyName("purchaseHistories")]
+    public List<PurchaseHistory> PurchaseHistories { get; set; } = [];
 }
 
 internal class PurchaseHistory
 {
-    public string PharmacyName { get; set; }
-    public string MaskName { get; set; }
+    [JsonPropertyName("pharmacyName")]
+    public string PharmacyName { get; set; } = string.Empty;
+    [JsonPropertyName("maskName")]
+    public string MaskName { get; set; } = string.Empty;
+    [JsonPropertyName("transactionAmount")]
     public decimal TransactionAmount { get; set; }
-    public DateTime TransactionDate { get; set; }
+    [JsonPropertyName("transactionDate")]
+    public string TransactionDate { get; set; } = string.Empty;
 }

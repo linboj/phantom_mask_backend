@@ -49,7 +49,7 @@ namespace Backend.Controllers
         /// <returns>The transaction statistics within the specified date range.</returns>
         /// <response code="500">Internal Server Error</response>
         [HttpGet("statistics")]
-        public async Task<ActionResult<TransactionStatisticsDTO>> GetStatistics([FromQuery] InDateRangeQueryParameter parameter)
+        public async Task<ActionResult<TransactionStatisticsDTO>> GetStatistics([AsParameters] InDateRangeQueryParameter parameter)
         {
             try
             {

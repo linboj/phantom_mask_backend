@@ -58,7 +58,7 @@ namespace Backend.Services
 
             try
             {
-                await _dataContext.SaveChangesAsync();   
+                await _dataContext.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -86,22 +86,32 @@ namespace Backend.Services
 
         internal async Task<List<UserWithTotalTranscationAmountDTO>> GetTopUser(TopUsersQueryParameter parameter)
         {
-            DateTime StartDate = parameter.StartDate.ToDateTime(TimeOnly.MinValue);
-            DateTime EndDate = parameter.EndDate.ToDateTime(TimeOnly.MaxValue);
-            var users = await _dataContext.Transactions
-                            .Where(t => t.TransactionDate >= StartDate && t.TransactionDate <= EndDate)
-                            .Include(t => t.User)
-                            .GroupBy(t => t.User)
-                            .Select(g => new UserWithTotalTranscationAmountDTO
-                            {
-                                Id = g.Key.Id,
-                                Name = g.Key.Name,
-                                TotalTranscationAmount = g.Sum(t => t.TransactionAmount)
-                            })
-                            .OrderByDescending(user => user.TotalTranscationAmount)
-                            .Take(parameter.Limit)
-                            .ToListAsync();
-            return users;
+            try
+            {
+
+                DateTime StartDate = parameter.StartDate.ToDateTime(TimeOnly.MinValue);
+                DateTime EndDate = parameter.EndDate.ToDateTime(TimeOnly.MaxValue);
+                var users = await _dataContext.Transactions
+                                .Where(t => t.TransactionDate >= StartDate && t.TransactionDate <= EndDate)
+                                .Include(t => t.User)
+                                .GroupBy(t => t.User)
+                                .Select(g => new UserWithTotalTranscationAmountDTO
+                                {
+                                    Id = g.Key.Id,
+                                    Name = g.Key.Name,
+                                    TotalTranscationAmount = g.Sum(t => t.TransactionAmount)
+                                })
+                                .OrderByDescending(user => user.TotalTranscationAmount)
+                                .Take(parameter.Limit)
+                                .ToListAsync();
+                return users;
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex);
+                throw;
+            }
         }
 
         internal async Task<TransactionGetDTO?> GetTransition(Guid id)

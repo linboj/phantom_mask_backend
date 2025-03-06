@@ -27,4 +27,10 @@ public class Pharmacy
     /// The list of masks sold in the pharmacy.
     /// </summary>
     public List<Mask> Masks { get; set; } = [];
+
+    /// <summary>
+    /// The list of openingHours of the pharmacy.
+    /// </summary>
+    public List<OpeningHour> OpeningHours { get; set; } = [];
+    public List<Transaction> Transactions { get; set; } = [];
 }

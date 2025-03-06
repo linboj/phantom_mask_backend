@@ -22,15 +22,15 @@ public class Mask
     /// Identifier of the mask type.
     /// </summary>
     [Required]
-    public required Guid MaskTypeId { get; set; }
-    [ForeignKey("MaskTypeId")]
+    [ForeignKey("MaskType")]
+    public Guid MaskTypeId { get; set; }
     public MaskType MaskType { get; set; } = null!;
 
     /// <summary>
     /// Identifier of the pharmacy where the mask is sold.
     /// </summary>
     [Required]
+    [ForeignKey("Pharmacy")]
     public Guid PharmacyId { get; set; }
-    [ForeignKey("PharmacyId")]
     public Pharmacy Pharmacy { get; set; } = null!;
 }

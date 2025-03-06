@@ -29,7 +29,7 @@ namespace Backend.Controllers
         /// <returns>The search result containing masks that match the search criteria.</returns>
         /// <response code="500">Internal Server Error</response>
         [HttpGet]
-        public async Task<ActionResult<SearchResultDTO>> Search([FromQuery] SearchByNameParameter parameter)
+        public async Task<ActionResult<SearchResultDTO>> Search([AsParameters] SearchByNameParameter parameter)
         {
             try
             {

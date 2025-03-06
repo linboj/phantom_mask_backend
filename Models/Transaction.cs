@@ -26,23 +26,23 @@ public class Transaction
     /// The user associated with the transaction.
     /// </summary>
     [Required]
+    [ForeignKey("User")]
     public Guid UserId { get; set; }
-    [ForeignKey("UserId")]
     public User User { get; set; } = null!;
 
     /// <summary>
     /// The pharmacy associated with the transaction.
     /// </summary>
     [Required]
+    [ForeignKey("Pharmacy")]
     public Guid PharmacyId { get; set; }
-    [ForeignKey("PharmacyId")]
     public Pharmacy Pharmacy { get; set; } = null!;
 
     /// <summary>
     /// The mask associated with the transaction.
     /// </summary>
     [Required]
+    [ForeignKey("Mask")]
     public Guid MaskId { get; set; }
-    [ForeignKey("MaskId")]
     public Mask Mask { get; set; } = null!;
 }

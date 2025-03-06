@@ -37,7 +37,7 @@ public class OpeningHour
     /// The pharmacy associated with this opening hours.
     /// </summary>
     [Required]
+    [ForeignKey("Pharmacy")]
     public Guid PharmacyId { get; set; }
-    [ForeignKey("PharmacyId")]
     public Pharmacy Pharmacy { get; set; } = null!;
 }

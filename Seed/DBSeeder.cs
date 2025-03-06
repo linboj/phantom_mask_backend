@@ -13,11 +13,11 @@ public class DbSeeder
     public static async Task SeedAsync(DataContext context, IWebHostEnvironment env)
     {
         // Process pharmacies.json
-        string pharmaciesJsonPath = Path.GetFullPath(Path.Combine(env.ContentRootPath, "..", "pharmacies.json"));
+        string pharmaciesJsonPath = Path.GetFullPath(Path.Combine(env.ContentRootPath, "pharmacies.json"));
         await ProcessPharmaciesJson(pharmaciesJsonPath, context);
 
         // Process users.json
-        string usersJsonPath = Path.GetFullPath(Path.Combine(env.ContentRootPath, "..", "users.json"));
+        string usersJsonPath = Path.GetFullPath(Path.Combine(env.ContentRootPath, "users.json"));
         await ProcessUsersJson(usersJsonPath, context);
     }
 
@@ -55,11 +55,12 @@ public class DbSeeder
 
         // Process and add opening hours
         var openingHours = ProcessOpeningHoursString(pharmacyJson.OpeningHours);
+        Console.WriteLine($"1. {pharmacy.Id}");
         foreach (var (week, startTime, endTime) in openingHours)
         {
             pharmacy.OpeningHours.Add(new OpeningHour()
             {
-                Week = week,
+                Week = (ushort)week,
                 OpenTime = startTime,
                 CloseTime = endTime,
             });
@@ -67,6 +68,7 @@ public class DbSeeder
 
         context.Pharmacies.Add(pharmacy);
         await context.SaveChangesAsync();
+        Console.WriteLine($"2. {pharmacy.Id}");
 
         // Store pharmacy ID for reference
         pharmacyNameToId.Add(pharmacy.Name, pharmacy.Id);
@@ -132,7 +134,7 @@ public class DbSeeder
                     MaskId = maskId,
                     PharmacyId = pharmacyId,
                     TransactionAmount = purchaseHistory.TransactionAmount,
-                    TransactionDate = purchaseHistory.TransactionDate,
+                    TransactionDate = DateTime.Parse(purchaseHistory.TransactionDate),
                 });
             }
             context.Users.Add(user);
@@ -167,9 +169,9 @@ public class DbSeeder
     /// </summary>
     /// <param name="openingHoursString">The opening hours string.</param>
     /// <returns>A list of tuples containing week, start time, and end time.</returns>
-    private static List<(ushort week, TimeOnly startTime, TimeOnly endTime)> ProcessOpeningHoursString(string openingHoursString)
+    private static List<(int week, TimeOnly startTime, TimeOnly endTime)> ProcessOpeningHoursString(string openingHoursString)
     {
-        List<(ushort week, TimeOnly startTime, TimeOnly endTime)> openingHours = new();
+        List<(int week, TimeOnly startTime, TimeOnly endTime)> openingHours = new();
 
         var splitStrings = openingHoursString.Split(" / ", StringSplitOptions.RemoveEmptyEntries);
 
@@ -183,14 +185,14 @@ public class DbSeeder
             List<(TimeOnly startTime, TimeOnly endTime)> times = ProcessOpeningHoursTimePart(timePart);
 
             // Process week part
-            List<ushort> dayOfWeeks = ProcessOpeningHoursWeekDayPart(weekPart);
+            List<int> dayOfWeeks = ProcessOpeningHoursWeekDayPart(weekPart);
 
             int timeCount = times.Count;
             foreach (var weekDay in dayOfWeeks)
             {
                 openingHours.Add((weekDay, times[0].startTime, times[0].endTime));
                 if (timeCount > 1)
-                    openingHours.Add(((ushort)((weekDay + 1) % 7), times[1].startTime, times[1].endTime));
+                    openingHours.Add(((int)((weekDay + 1) % 7), times[1].startTime, times[1].endTime));
             }
         }
 
@@ -223,15 +225,15 @@ public class DbSeeder
     /// Processes the week part of the opening hours string.
     /// </summary>
     /// <param name="weekPart">The week part of the opening hours string.</param>
-    /// <returns>A list of day of weeks as ushort.</returns>
-    private static List<ushort> ProcessOpeningHoursWeekDayPart(string weekPart)
+    /// <returns>A list of day of weeks as int.</returns>
+    private static List<int> ProcessOpeningHoursWeekDayPart(string weekPart)
     {
-        List<ushort> dayOfWeeks = new();
+        List<int> dayOfWeeks = new();
         if (weekPart.Contains('-'))
         {
             var weekPartContinuousSplit = weekPart.Split('-', StringSplitOptions.RemoveEmptyEntries);
-            ushort startWeekDay = (ushort)(DayOfWeekAbbr)Enum.Parse(typeof(DayOfWeekAbbr), weekPartContinuousSplit[0]);
-            ushort endWeekDay = (ushort)(DayOfWeekAbbr)Enum.Parse(typeof(DayOfWeekAbbr), weekPartContinuousSplit[1]);
+            int startWeekDay = (int)(DayOfWeekAbbr)Enum.Parse(typeof(DayOfWeekAbbr), weekPartContinuousSplit[0]);
+            int endWeekDay = (int)(DayOfWeekAbbr)Enum.Parse(typeof(DayOfWeekAbbr), weekPartContinuousSplit[1]);
             for (var i = startWeekDay; i <= endWeekDay; i++)
             {
                 dayOfWeeks.Add(i);
@@ -242,7 +244,7 @@ public class DbSeeder
             var weekPartSingleSplit = weekPart.Split(",", StringSplitOptions.RemoveEmptyEntries);
             foreach (var item in weekPartSingleSplit)
             {
-                dayOfWeeks.Add((ushort)(DayOfWeekAbbr)Enum.Parse(typeof(DayOfWeekAbbr), item));
+                dayOfWeeks.Add((int)(DayOfWeekAbbr)Enum.Parse(typeof(DayOfWeekAbbr), item));
             }
         }
         return dayOfWeeks;

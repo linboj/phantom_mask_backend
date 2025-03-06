@@ -10,8 +10,8 @@ public class PharmacyBaseDTO: ISearchable
 public class OpenedPharmacyDTO : PharmacyBaseDTO
 {
     public int Week { get; set; }
-    public TimeSpan OpenTime { get; set; }
-    public TimeSpan CloseTime { get; set; }
+    public TimeOnly OpenTime { get; set; }
+    public TimeOnly CloseTime { get; set; }
 }
 
 public class PharmacyFilteredByMaskDTO : PharmacyBaseDTO
