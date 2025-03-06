@@ -44,8 +44,8 @@ namespace Backend.Services
             var pharmacy = mask.Pharmacy;
             pharmacy.CashBalance += totalAmount;
             user.CashBalance -= totalAmount;
-            _dataContext.Pharmacies.Add(pharmacy);
-            _dataContext.Users.Add(user);
+            _dataContext.Pharmacies.Update(pharmacy);
+            _dataContext.Users.Update(user);
 
             Transaction record = new()
             {
