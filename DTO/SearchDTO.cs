@@ -4,7 +4,7 @@ namespace Backend.DTO;
 
 public class SearchResultDTO
 {
-    public IEnumerable<ISearchable> Results { get; set; } = [];
+    public IEnumerable<object> Results { get; set; } = [];
     public PaginationMetaData Metadata { get; set; } = new PaginationMetaData();
 }
 

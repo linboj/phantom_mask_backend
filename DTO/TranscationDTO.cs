@@ -16,7 +16,6 @@ public class TransactionCreateDto
 public class TransactionGetDTO
 {
     public Guid Id { get; set; }
-    public string Name { get; set; } = "";
     public decimal TransactionAmount { get; set; }
     public DateTime TransactionDate { get; set; }
 

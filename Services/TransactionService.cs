@@ -19,11 +19,15 @@ namespace Backend.Services
             _mapper = mapper;
         }
 
-        internal async Task<Transaction> Create(TransactionCreateDto transaction)
+        internal async Task<TransactionGetDTO> Create(TransactionCreateDto transaction)
         {
+            if (transaction.Quantity == 0){
+                throw new TransactionCreateValidationException([$"Quantity should be larger than 0"]);
+            }
             var mask = await _dataContext.Masks
                         .Where(mask => mask.Id == transaction.MaskId)
                         .Include(mask => mask.Pharmacy)
+                        .Include(mask => mask.MaskType)
                         .SingleOrDefaultAsync();
             decimal totalAmount = 0;
             if (mask == null)
@@ -49,10 +53,11 @@ namespace Backend.Services
 
             Transaction record = new()
             {
-                UserId = transaction.UserId,
-                MaskId = transaction.MaskId,
-                PharmacyId = pharmacy.Id,
+                User = user,
+                Mask = mask,
+                Pharmacy = pharmacy,
                 TransactionAmount = totalAmount,
+                TransactionDate = DateTime.Now,
             };
             _dataContext.Transactions.Add(record);
 
@@ -65,7 +70,7 @@ namespace Backend.Services
                 throw;
             }
 
-            return record;
+            return _mapper.Map<TransactionGetDTO>(record);
         }
 
         internal async Task<TransactionStatisticsDTO> GetStatistics(InDateRangeQueryParameter parameter)
@@ -114,17 +119,26 @@ namespace Backend.Services
             }
         }
 
-        internal async Task<TransactionGetDTO?> GetTransition(Guid id)
+        internal async Task<TransactionGetDTO?> GetTransaction(Guid id)
         {
-            var transaction = await _dataContext.Transactions
-                                .Where(t => t.Id == id)
-                                .Include(t => t.User)
-                                .Include(t => t.Pharmacy)
-                                .Include(t => t.Mask)
-                                .ThenInclude(t => t.MaskType)
-                                .SingleOrDefaultAsync();
-            if (transaction != null) return _mapper.Map<TransactionGetDTO>(transaction);
-            return null;
+            try
+            {
+                var transaction = await _dataContext.Transactions
+                                    .Where(t => t.Id == id)
+                                    .Include(t => t.User)
+                                    .Include(t => t.Pharmacy)
+                                    .Include(t => t.Mask)
+                                    .ThenInclude(t => t.MaskType)
+                                    .SingleOrDefaultAsync();
+                if (transaction != null) return _mapper.Map<TransactionGetDTO>(transaction);
+                return null;
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex);
+                throw;
+            }
         }
     }
 

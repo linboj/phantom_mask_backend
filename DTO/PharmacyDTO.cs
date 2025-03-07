@@ -2,7 +2,7 @@ using Backend.Interface;
 
 namespace Backend.DTO;
 
-public class PharmacyBaseDTO: ISearchable
+public class PharmacyBaseDTO
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = "";

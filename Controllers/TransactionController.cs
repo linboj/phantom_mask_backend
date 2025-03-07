@@ -71,7 +71,7 @@ namespace Backend.Controllers
         /// <response code="422">Transcation validation failed</response>
         /// <response code="500">Internal Server Error</response>
         [HttpPost]
-        public async Task<ActionResult> CreateTransaction([FromBody] TransactionCreateDto body)
+        public async Task<ActionResult<TransactionGetDTO>> CreateTransaction([FromBody] TransactionCreateDto body)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace Backend.Controllers
             }
             catch (TransactionCreateValidationException ex)
             {
-                return UnprocessableEntity(ex);
+                return UnprocessableEntity(ex.Errors[0]);
             }
             catch (Exception)
             {
@@ -96,15 +96,15 @@ namespace Backend.Controllers
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
         [HttpGet("{id}")]
-        public async Task<ActionResult<TransactionGetDTO>> GetTransition([FromRoute] Guid id)
+        public async Task<ActionResult<TransactionGetDTO>> GetTransaction([FromRoute] Guid id)
         {
             try
             {
-                var transition = await _service.GetTransition(id);
+                var transaction = await _service.GetTransaction(id);
 
-                if (transition == null) return NotFound();
+                if (transaction == null) return NotFound();
 
-                return transition;
+                return transaction;
             }
             catch (Exception)
             {
