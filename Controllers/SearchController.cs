@@ -8,7 +8,7 @@ namespace Backend.Controllers
     /// <summary>
     /// API for searching
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class SearchController : ControllerBase
     {

@@ -9,7 +9,7 @@ namespace Backend.Controllers
     /// <summary>
     /// API for transaction-related.
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class TransactionController : ControllerBase
     {
