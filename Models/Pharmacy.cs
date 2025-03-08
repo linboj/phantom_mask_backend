@@ -6,10 +6,8 @@ namespace Backend.Models;
 /// <summary>
 /// Represents a pharmacy.
 /// </summary>
-public class Pharmacy
+public class Pharmacy : BaseEntity
 {
-    public Guid Id { get; set; }
-
     /// <summary>
     /// The name of the pharmacy.
     /// </summary>

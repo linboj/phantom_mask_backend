@@ -3,10 +3,8 @@ namespace Backend.Models;
 /// <summary>
 /// Represents a type of mask.
 /// </summary>
-public class MaskType
+public class MaskType : BaseEntity
 {
-    public Guid Id { get; set; }
-
     /// <summary>
     /// The name of the mask type.
     /// </summary>

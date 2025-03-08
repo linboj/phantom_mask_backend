@@ -6,10 +6,8 @@ namespace Backend.Models;
 /// <summary>
 /// Represents a transaction of mask.
 /// </summary>
-public class Transaction
+public class Transaction : BaseEntity
 {
-    public Guid Id { get; set; }
-
     /// <summary>
     /// The amount of the transaction.
     /// </summary>

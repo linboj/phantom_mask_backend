@@ -6,10 +6,8 @@ namespace Backend.Models;
 /// <summary>
 /// Represents the opening hours of a pharmacy.
 /// </summary>
-public class OpeningHour
+public class OpeningHour : BaseEntity
 {
-    public Guid Id { get; set; }
-
     /// <summary>
     /// The day of the week (0-6, where 0 is Sunday and 6 is Saturday).
     /// </summary>

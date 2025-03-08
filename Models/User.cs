@@ -6,10 +6,8 @@ namespace Backend.Models;
 /// <summary>
 /// Represents a user.
 /// </summary>
-public class User
+public class User : BaseEntity
 {
-    public Guid Id { get; set; }
-
     /// <summary>
     /// The name of the user.
     /// </summary>

@@ -46,4 +46,48 @@ public class DataContext : DbContext
             .WithOne(oh => oh.Pharmacy)
             .HasForeignKey(oh => oh.PharmacyId);
     }
+
+    public override int SaveChanges()
+    {
+        foreach (var entry in ChangeTracker.Entries())
+        {
+            if (entry.Entity is BaseEntity entity)
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entity.CreatedAt = DateTime.UtcNow; // Set CreatedAt when the entity is added
+                    entity.UpdatedAt = entity.CreatedAt; // Set UpdatedAt as same as CreatedAt when the entity is added
+                }
+
+                if (entry.State == EntityState.Modified)
+                {
+                    entity.UpdatedAt = DateTime.UtcNow; // Set UpdatedAt when the entity is modified
+                }
+            }
+        }
+
+        return base.SaveChanges();
+    }
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        foreach (var entry in ChangeTracker.Entries())
+        {
+            if (entry.Entity is BaseEntity entity)
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entity.CreatedAt = DateTime.UtcNow;  // Set CreatedAt when the entity is added
+                    entity.UpdatedAt = entity.CreatedAt; // Set UpdatedAt as same as CreatedAt when the entity is added
+                }
+
+                if (entry.State == EntityState.Modified)
+                {
+                    entity.UpdatedAt = DateTime.UtcNow;  // Set UpdatedAt when the entity is modified
+                }
+            }
+        }
+
+        return await base.SaveChangesAsync(cancellationToken);
+    }
 }

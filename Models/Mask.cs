@@ -6,10 +6,8 @@ namespace Backend.Models;
 /// <summary>
 /// Represents a mask with its type, and price at which pharmacy it was sold.
 /// </summary>
-public class Mask
+public class Mask: BaseEntity
 {
-    public Guid Id { get; set; }
-
     /// <summary>
     /// Price of the mask.
     /// </summary>
